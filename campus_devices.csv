@@ -1,0 +1,41 @@
+building_id,building_type,device_id,device_type,location,priority,sheddable_pct,min_power_kw,max_power_kw,reported_issue
+solar_farm,source,sf_001,solar_panel,North Roof,1,0,0,120,False
+solar_farm,source,sf_002,solar_panel,North Roof,1,0,0,120,False
+solar_farm,source,sf_003,solar_panel,South Roof,1,0,0,120,False
+solar_farm,source,sf_004,battery_storage,Energy Center,1,0,0,140,False
+grid,source,gr_001,grid_connection,Utility Room,3,0,0,9999,False
+dorm_a,residential,da_001,hvac,Floor 1,2,40,2,8,False
+dorm_a,residential,da_002,hvac,Floor 2,2,40,2,8,False
+dorm_a,residential,da_003,lighting,Common Area,3,80,0.5,2,False
+dorm_a,residential,da_004,lighting,Hallways,3,80,0.2,1,False
+dorm_a,residential,da_005,appliances,Kitchen,2,30,1,4,False
+dorm_a,residential,da_006,ev_charger,Parking Lot,3,100,0,7,False
+dorm_b,residential,db_001,hvac,Floor 1,2,40,2,8,False
+dorm_b,residential,db_002,hvac,Floor 2,2,40,2,8,False
+dorm_b,residential,db_003,lighting,Common Area,3,80,0.5,2,False
+dorm_b,residential,db_004,appliances,Kitchen,2,30,1,4,False
+dorm_b,residential,db_005,ev_charger,Parking Lot,3,100,0,7,False
+library,academic,lb_001,hvac,Main Floor,1,20,3,10,False
+library,academic,lb_002,lighting,Reading Room,2,50,1,4,False
+library,academic,lb_003,lighting,Stacks,3,70,0.5,2,False
+library,academic,lb_004,computers,Computer Lab,1,10,2,8,False
+library,academic,lb_005,security,Entrance,1,0,0.2,0.5,False
+gym,recreation,gm_001,hvac,Main Hall,2,50,3,12,False
+gym,recreation,gm_002,lighting,Main Hall,2,60,1,5,False
+gym,recreation,gm_003,lighting,Locker Rooms,3,70,0.3,1,False
+gym,recreation,gm_004,appliances,Equipment Room,3,40,0.5,2,False
+lecture_hall,academic,lh_001,hvac,Hall A,1,20,4,14,False
+lecture_hall,academic,lh_002,hvac,Hall B,1,20,4,14,False
+lecture_hall,academic,lh_003,lighting,Hall A,1,30,1,6,False
+lecture_hall,academic,lh_004,lighting,Hall B,1,30,1,6,False
+lecture_hall,academic,lh_005,av_system,Hall A,1,10,1,4,False
+lecture_hall,academic,lh_006,av_system,Hall B,1,10,1,4,False
+research_lab,research,rl_001,hvac,Lab Wing,1,0,5,18,False
+research_lab,research,rl_002,lab_equipment,Lab 101,1,0,3,12,False
+research_lab,research,rl_003,lab_equipment,Lab 102,1,0,3,12,False
+research_lab,research,rl_004,computers,Server Room,1,0,4,16,False
+research_lab,research,rl_005,lighting,Lab Wing,2,40,0.5,2,False
+admin,administrative,ad_001,hvac,Main Office,2,30,2,8,False
+admin,administrative,ad_002,lighting,Main Office,3,60,0.5,3,False
+admin,administrative,ad_003,computers,IT Room,2,20,1,5,False
+admin,administrative,ad_004,security,Building,1,0,0.3,0.8,False

@@ -302,29 +302,58 @@ export default function AdminView({ onSignOut }) {
                   <rect width="40" height="40" fill="#9ccc65" />
                   <circle cx="10" cy="10" r="1.5" fill="#7cb342" opacity="0.7" />
                   <circle cx="30" cy="25" r="1" fill="#7cb342" opacity="0.5" />
+                  <circle cx="15" cy="35" r="1.2" fill="#7cb342" opacity="0.6" />
+                  <circle cx="35" cy="8" r="0.8" fill="#558b2f" opacity="0.4" />
+                </pattern>
+                <linearGradient id="roadGradientA" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="#52525b" stopOpacity={1} />
+                  <stop offset="50%" stopColor="#3f3f46" stopOpacity={1} />
+                  <stop offset="100%" stopColor="#2f2f35" stopOpacity={1} />
+                </linearGradient>
+                <pattern id="roadTextureA" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
+                  <circle cx="1" cy="1" r="0.6" fill="#000000" opacity={0.08} />
+                </pattern>
+                <pattern id="sidewalkPatternA" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+                  <rect width="12" height="12" fill="#cbd5e1" />
+                  <path d="M0 6 H12 M6 0 V12" stroke="#94a3b8" strokeWidth={0.6} opacity={0.4} />
                 </pattern>
                 <g id="treeA">
-                  <ellipse cx="0" cy="-18" rx="24" ry="28" fill="#2d5016" opacity="0.95" />
-                  <ellipse cx="-14" cy="-8" rx="20" ry="25" fill="#3d6b1f" opacity="0.9" />
-                  <ellipse cx="14" cy="-8" rx="20" ry="25" fill="#3d6b1f" opacity="0.9" />
+                  <ellipse cx="0" cy="-18" rx="24" ry="28" fill="#2d5016" opacity="1" />
+                  <ellipse cx="-14" cy="-8" rx="20" ry="25" fill="#3d6b1f" opacity="1" />
+                  <ellipse cx="14" cy="-8" rx="20" ry="25" fill="#3d6b1f" opacity="1" />
+                  <ellipse cx="-8" cy="5" rx="15" ry="18" fill="#388e3c" opacity="1" />
+                  <ellipse cx="8" cy="5" rx="15" ry="18" fill="#388e3c" opacity="1" />
                   <rect x="-2.5" y="12" width="5" height="28" fill="#6d4c41" />
+                  <rect x="-3.5" y="28" width="7" height="12" fill="#5d4037" opacity="0.8" />
                 </g>
-                <pattern id="roadTextureA" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <rect width="20" height="20" fill="#616161" />
-                  <line x1="0" y1="10" x2="20" y2="10" stroke="#ffeb3b" strokeWidth="1" opacity="0.6" />
-                </pattern>
               </defs>
               <rect width="100%" height="100%" fill="url(#grassBaseA)" filter="url(#grassNoiseA)" />
+              <rect x="0%" y="47%" width="100%" height="5%" fill="url(#roadGradientA)" opacity="0.9" />
+              <rect x="48%" y="0%" width="4%" height="100%" fill="url(#roadGradientA)" opacity="0.9" />
+              <rect x="0%" y="47%" width="100%" height="5%" fill="url(#roadTextureA)" opacity="0.8" />
+              <rect x="48%" y="0%" width="4%" height="100%" fill="url(#roadTextureA)" opacity="0.8" />
+              <rect x="0%" y="46%" width="100%" height="1%" fill="url(#sidewalkPatternA)" opacity="0.6" />
+              <rect x="0%" y="52%" width="100%" height="1%" fill="url(#sidewalkPatternA)" opacity="0.6" />
+              <rect x="47%" y="0%" width="1%" height="100%" fill="url(#sidewalkPatternA)" opacity="0.6" />
+              <rect x="52%" y="0%" width="1%" height="100%" fill="url(#sidewalkPatternA)" opacity="0.6" />
+              <rect x="48%" y="46.9%" width="4.22%" height="5.1%" fill="#404541" opacity="1" />
+              <line x1="0" x2="100%" y1="49.5%" y2="49.5%" stroke="#facc15" strokeWidth={3} strokeDasharray="18 18" strokeLinecap="butt" />
+              <line y1="0" y2="100%" x1="50%" x2="50%" stroke="#facc15" strokeWidth={3} strokeDasharray="18 18" strokeLinecap="butt" />
+              <g>
+                <rect x="53.2%" y="40%" width="0.4%" height="5%" fill="#1f2937" />
+                <rect x="52.75%" y="36.5%" width="1.2%" height="4%" rx="0.6%" fill="#111827" />
+                <circle cx="53.4%" cy="37.7%" r="0.35%" fill="#ef4444" />
+                <circle cx="53.4%" cy="38.6%" r="0.35%" fill="#facc15" opacity={0.4} />
+                <circle cx="53.4%" cy="39.6%" r="0.35%" fill="#22c55e" opacity={0.4} />
+              </g>
               <g opacity="0.9">
                 <use href="#treeA" x="8%" y="38%" />
-                <use href="#treeA" x="25%" y="42%" />
-                <use href="#treeA" x="88%" y="48%" />
+                <use href="#treeA" x="65%" y="37%" />
+                <use href="#treeA" x="88%" y="60%" />
+                <use href="#treeA" x="12%" y="84%" />
+                <use href="#treeA" x="92%" y="88%" />
                 <use href="#treeA" x="5%" y="15%" />
               </g>
-              <rect x="0%" y="47%" width="100%" height="5%" fill="url(#roadTextureA)" opacity="0.9" />
-              <rect x="48%" y="0%" width="4%" height="100%" fill="url(#roadTextureA)" opacity="0.9" />
-              <path d="M 15% 20% L 35% 35% L 50% 47%" stroke="#a1887f" strokeWidth="2.8" fill="none" opacity="0.6" strokeLinecap="round" />
-              <path d="M 85% 25% L 65% 40% L 50% 47%" stroke="#a1887f" strokeWidth="2.8" fill="none" opacity="0.6" strokeLinecap="round" />
               <rect x="1%" y="1%" width="98%" height="98%" fill="none" stroke="#8d6e63" strokeWidth="2.5" opacity="0.35" strokeDasharray="5,3" />
             </svg>
 

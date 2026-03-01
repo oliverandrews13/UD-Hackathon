@@ -1,11 +1,11 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const CAMPUS_BUILDINGS = [
-  { id: "dorm-a", name: "Dorm A", buildingType: "dorm", hasIssue: true, issueType: "Reduced Load", x: 18, y: 22 },
+  { id: "dorm-a", name: "Dorm A", buildingType: "dorm", hasIssue: false, x: 18, y: 22 },
   { id: "library", name: "Library", buildingType: "library", hasIssue: false, x: 62, y: 12 },
   { id: "dorm-b", name: "Dorm B", buildingType: "dorm", hasIssue: false, x: 82, y: 28 },
   { id: "lecture-hall", name: "Lecture Hall", buildingType: "lecture", hasIssue: false, x: 22, y: 68 },
-  { id: "gym", name: "Gym", buildingType: "gym", hasIssue: true, issueType: "Reduced Load", x: 63, y: 63 },
+  { id: "gym", name: "Gym", buildingType: "gym", hasIssue: false, x: 63, y: 63 },
   { id: "research-lab", name: "Research Lab", buildingType: "lab", hasIssue: false, x: 38, y: 35 },
   { id: "admin-building", name: "Admin Building", buildingType: "admin", hasIssue: false, x: 35, y: 82 },
 ];
@@ -177,6 +177,12 @@ function BuildingClipArt({ buildingType, isHovered }) {
   }
 }
 
+const ID_MAP = {
+  "dorm-a": "dorm_a", "dorm-b": "dorm_b", "lecture-hall": "lecture_hall",
+  "research-lab": "research_lab", "admin-building": "admin",
+  "gym": "gym", "library": "library",
+};
+
 export default function StudentView({ onSignOut }) {
   const [selectedBuilding, setSelectedBuilding] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -184,6 +190,24 @@ export default function StudentView({ onSignOut }) {
   const [description, setDescription] = useState("");
   const [hoveredBuilding, setHoveredBuilding] = useState(null);
   const [submitted, setSubmitted] = useState(false);
+  const [buildings, setBuildings] = useState(CAMPUS_BUILDINGS);
+
+  useEffect(() => {
+    const fetchIssues = async () => {
+      try {
+        const res = await fetch("http://127.0.0.1:5001/api/issues");
+        const issues = await res.json();
+        const flaggedIds = new Set(issues.map(i => i.building_id));
+        setBuildings(CAMPUS_BUILDINGS.map(b => ({
+          ...b,
+          hasIssue: flaggedIds.has(b.id) || flaggedIds.has(ID_MAP[b.id])
+        })));
+      } catch(e) {}
+    };
+    fetchIssues();
+    const interval = setInterval(fetchIssues, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleBuildingClick = (building) => {
     setSelectedBuilding(building);
@@ -258,43 +282,36 @@ export default function StudentView({ onSignOut }) {
               <circle cx="15" cy="35" r="1.2" fill="#7cb342" opacity="0.6" />
               <circle cx="35" cy="8" r="0.8" fill="#558b2f" opacity="0.4" />
             </pattern>
+            <linearGradient id="roadGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+  <stop offset="0%" stopColor="#52525b" stopOpacity={1} />
+  <stop offset="50%" stopColor="#3f3f46" stopOpacity={1} />
+  <stop offset="100%" stopColor="#2f2f35" stopOpacity={1} />
+</linearGradient>
+
+<pattern id="roadTexture" x="0" y="0" width="6" height="6" patternUnits="userSpaceOnUse">
+  <circle cx="1" cy="1" r="0.6" fill="#000000" opacity={0.08} />
+</pattern>
+
+<pattern id="sidewalkPattern" x="0" y="0" width="12" height="12" patternUnits="userSpaceOnUse">
+  <rect width="12" height="12" fill="#cbd5e1" />
+  <path d="M0 6 H12 M6 0 V12" stroke="#94a3b8" strokeWidth={0.6} opacity={0.4} />
+</pattern>
+          </defs>
             <g id="tree">
-              <ellipse cx="0" cy="-18" rx="24" ry="28" fill="#2d5016" opacity="0.95" />
-              <ellipse cx="-14" cy="-8" rx="20" ry="25" fill="#3d6b1f" opacity="0.9" />
-              <ellipse cx="14" cy="-8" rx="20" ry="25" fill="#3d6b1f" opacity="0.9" />
-              <ellipse cx="-8" cy="5" rx="15" ry="18" fill="#388e3c" opacity="0.8" />
-              <ellipse cx="8" cy="5" rx="15" ry="18" fill="#388e3c" opacity="0.8" />
+              <ellipse cx="0" cy="-18" rx="24" ry="28" fill="#2d5016" opacity="1" />
+              <ellipse cx="-14" cy="-8" rx="20" ry="25" fill="#3d6b1f" opacity="1" />
+              <ellipse cx="14" cy="-8" rx="20" ry="25" fill="#3d6b1f" opacity="1" />
+              <ellipse cx="-8" cy="5" rx="15" ry="18" fill="#388e3c" opacity="01" />
+              <ellipse cx="8" cy="5" rx="15" ry="18" fill="#388e3c" opacity="01" />
               <rect x="-2.5" y="12" width="5" height="28" fill="#6d4c41" />
               <rect x="-3.5" y="28" width="7" height="12" fill="#5d4037" opacity="0.8" />
             </g>
-            <linearGradient id="roadGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" style={{ stopColor: "#616161", stopOpacity: 1 }} />
-              <stop offset="50%" style={{ stopColor: "#616161", stopOpacity: 1 }} />
-              <stop offset="100%" style={{ stopColor: "#616161", stopOpacity: 1 }} />
-            </linearGradient>
-            <pattern id="roadTexture" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-              <rect width="20" height="20" fill="none" stroke="#424242" strokeWidth="0.5" opacity="0.3" />
-              <line x1="0" y1="10" x2="20" y2="10" stroke="#ffeb3b" strokeWidth="1" opacity="0.6" />
-            </pattern>
-            <pattern id="sidewalkPattern" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
-              <rect width="10" height="10" fill="#bdbdbd" />
-              <line x1="0" y1="5" x2="10" y2="5" stroke="#9e9e9e" strokeWidth="0.5" opacity="0.5" />
-              <line x1="5" y1="0" x2="5" y2="10" stroke="#9e9e9e" strokeWidth="0.5" opacity="0.5" />
-            </pattern>
-            <pattern id="parkingPattern" x="0" y="0" width="30" height="30" patternUnits="userSpaceOnUse">
-              <rect width="30" height="30" fill="#757575" />
-              <line x1="0" y1="15" x2="30" y2="15" stroke="#ffeb3b" strokeWidth="0.8" opacity="0.5" />
-            </pattern>
-            <filter id="waterRipple">
-              <feTurbulence type="fractalNoise" baseFrequency="0.05" numOctaves="2" />
-            </filter>
-          </defs>
           <rect width="100%" height="100%" fill="url(#grassBase)" filter="url(#grassNoise)" />
-          <g opacity="0.9">
+          <g opacity="30">
             <use href="#tree" x="8%" y="38%" />
-            <use href="#tree" x="25%" y="42%" />
-            <use href="#tree" x="88%" y="48%" />
-            <use href="#tree" x="12%" y="80%" />
+            <use href="#tree" x="65%" y="37%" />
+            <use href="#tree" x="88%" y="60%" />
+            <use href="#tree" x="12%" y="84%" />
             <use href="#tree" x="92%" y="88%" />
             <use href="#tree" x="5%" y="15%" />
           </g>
@@ -306,22 +323,59 @@ export default function StudentView({ onSignOut }) {
           <rect x="0%" y="52%" width="100%" height="1%" fill="url(#sidewalkPattern)" opacity="0.6" />
           <rect x="47%" y="0%" width="1%" height="100%" fill="url(#sidewalkPattern)" opacity="0.6" />
           <rect x="52%" y="0%" width="1%" height="100%" fill="url(#sidewalkPattern)" opacity="0.6" />
+          {/* Traffic Light - Bottom Right Corner */}
+<g>
+  {/* Pole */}
+  <rect x="53.2%" y="40%" width="0.4%" height="5%" fill="#1f2937" />
+
+  {/* Light Housing */}
+  <rect x="52.75%" y="37.5%" width="1.2%" height="2.8%" rx="0.6%" fill="#111827" />
+
+  {/* Red */}
+  <circle cx="53.4%" cy="38.2%" r="0.35%" fill="#ef4444" />
+
+  {/* Yellow */}
+  <circle cx="53.4%" cy="39%" r="0.35%" fill="#facc15" opacity={0.4} />
+
+  {/* Green */}
+  <circle cx="53.4%" cy="39.8%" r="0.35%" fill="#22c55e" opacity={0.4} />
+</g>
+    {/* Horizontal dashed line */}
+<line
+  x1="0"
+  x2="100%"
+  y1="49.5%"
+  y2="49.5%"
+  stroke="#facc15"
+  strokeWidth={3}
+  strokeDasharray="18 18"
+  strokeLinecap="butt"
+/>
+
+{/* Vertical dashed line */}
+<line
+  y1="0"
+  y2="100%"
+  x1="50%"
+  x2="50%"
+  stroke="#facc15"
+  strokeWidth={3}
+  strokeDasharray="18 18"
+  strokeLinecap="butt"
+/>
+<rect x= "48%" y="46.9%" width="4.22%" height="5.1%" fill="#404541" opacity="1" />
           <path d="M 15% 20% L 35% 35% L 50% 47%" stroke="#a1887f" strokeWidth="2.8" fill="none" opacity="0.6" strokeLinecap="round" />
           <path d="M 85% 25% L 65% 40% L 50% 47%" stroke="#a1887f" strokeWidth="2.8" fill="none" opacity="0.6" strokeLinecap="round" />
           <path d="M 50% 47% L 50% 75% L 50% 85%" stroke="#a1887f" strokeWidth="2.8" fill="none" opacity="0.6" strokeLinecap="round" />
           <path d="M 50% 47% L 70% 60% L 80% 70%" stroke="#a1887f" strokeWidth="2.8" fill="none" opacity="0.6" strokeLinecap="round" />
           <rect x="5%" y="90%" width="12%" height="8%" fill="url(#parkingPattern)" opacity="0.7" />
           <rect x="83%" y="92%" width="10%" height="6%" fill="url(#parkingPattern)" opacity="0.7" />
-          <ellipse cx="8%" cy="70%" rx="8%" ry="12%" fill="#4dd0e1" opacity="0.35" filter="url(#waterRipple)" />
-          <ellipse cx="8%" cy="70%" rx="8%" ry="12%" fill="none" stroke="#29b6f6" strokeWidth="1" opacity="0.4" />
           <rect x="1%" y="1%" width="98%" height="98%" fill="none" stroke="#8d6e63" strokeWidth="2.5" opacity="0.35" strokeDasharray="5,3" />
-          <ellipse cx="35%" cy="30%" rx="20%" ry="15%" fill="#558b2f" opacity="0.08" />
-          <ellipse cx="70%" cy="45%" rx="25%" ry="20%" fill="#558b2f" opacity="0.08" />
         </svg>
 
         {/* Buildings */}
         <div style={{ position: "absolute", inset: 0 }}>
-          {CAMPUS_BUILDINGS.map((building) => (
+          {buildings.map((building) => (
             <div
               key={building.id}
               style={{
@@ -403,28 +457,64 @@ export default function StudentView({ onSignOut }) {
         </div>
 
         {/* Legend */}
+<div style={{
+  position: "absolute", bottom: 24, right: 24, zIndex: 40,
+  background: "#0d1526", borderRadius: 12, padding: "16px",
+  border: "1px solid #1e3a5f", boxShadow: "0 8px 32px rgba(0,0,0,0.5)"
+}}>
+  <p style={{ fontSize: 10, fontWeight: 700, color: "#475569", letterSpacing: 2, marginBottom: 12 }}>
+    CAMPUS LEGEND
+  </p>
+
+  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+
+    {/* Normal Status */}
+    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <div style={{
+        width: 14,
+        height: 14,
+        borderRadius: 3,
+        border: "2px solid #38bdf8",
+        background: "transparent",
+      }} />
+      <span style={{ fontSize: 12, color: "#94a3b8" }}>
+        Normal Status
+      </span>
+    </div>
+
+    {/* Issue Flagged */}
+    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+      <div style={{
+        width: 14,
+        height: 14,
+        borderRadius: 3,
+        border: "2px solid #ef4444",
+        background: "transparent",
+        position: "relative"
+      }}>
         <div style={{
-          position: "absolute", bottom: 24, right: 24, zIndex: 40,
-          background: "#0d1526", borderRadius: 12, padding: "16px",
-          border: "1px solid #1e3a5f", boxShadow: "0 8px 32px rgba(0,0,0,0.5)"
-        }}>
-          <p style={{ fontSize: 10, fontWeight: 700, color: "#475569", letterSpacing: 2, marginBottom: 12 }}>CAMPUS LEGEND</p>
-          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ width: 14, height: 14, borderRadius: 3, border: "2px solid #38bdf8", background: "transparent" }} />
-              <span style={{ fontSize: 12, color: "#94a3b8" }}>Normal Status</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ width: 14, height: 14, borderRadius: 3, border: "2px solid #ef4444", background: "transparent", position: "relative" }}>
-                <div style={{ position: "absolute", top: -4, right: -4, width: 6, height: 6, borderRadius: "50%", background: "#ef4444" }} />
-              </div>
-              <span style={{ fontSize: 12, color: "#94a3b8" }}>Issue Flagged</span>
-            </div>
-            <div style={{ borderTop: "1px solid #1e3a5f", paddingTop: 8, marginTop: 4 }}>
-              <p style={{ fontSize: 11, color: "#475569" }}>Click any building to report</p>
-            </div>
-          </div>
-        </div>
+          position: "absolute",
+          top: -4,
+          right: -4,
+          width: 6,
+          height: 6,
+          borderRadius: "50%",
+          background: "#ef4444"
+        }} />
+      </div>
+      <span style={{ fontSize: 12, color: "#94a3b8" }}>
+        Issue Flagged
+      </span>
+    </div>
+
+    <div style={{ borderTop: "1px solid #1e3a5f", paddingTop: 8, marginTop: 4 }}>
+      <p style={{ fontSize: 11, color: "#475569" }}>
+        Click any building to report
+      </p>
+    </div>
+
+  </div>
+</div>
 
         {/* Report Modal */}
         {isModalOpen && selectedBuilding && (

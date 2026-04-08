@@ -1,6 +1,6 @@
 # ⚡ University Energy Optimizer
 
-Smart campus energy scheduling — allocates solar energy first across buildings, falls back to the grid, and responds dynamically to infrastructure issues.
+Smart campus energy scheduling — allocates solar energy first across buildings, falls back to the grid, and responds dynamically to any infrastructure issues.
 
 ## Project Structure
 
